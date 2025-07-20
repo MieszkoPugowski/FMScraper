@@ -64,10 +64,6 @@ def season_games_finder(url):
         except:
             print(f"Error waiting for match {i}")
     driver.quit()
-    if games_list:
-        return games_list
-    else:
-        return "You have exceeded the number of rounds in the league"
     return games_list
 
 #
