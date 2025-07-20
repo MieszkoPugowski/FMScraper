@@ -49,20 +49,26 @@ def season_games_finder(url):
     games_list = []
     driver.get(url)
     consent_fotmob()
-    for i in range(1):
-        # try:
+    for i in range(32):
         round_i = url +f"&group=by-round&round={i}"
         driver.get(round_i)
-        time.sleep(1)
-        hrefs = [a.get_attribute("href") for a in
-                 driver.find_elements(By.CSS_SELECTOR, "a.css-1ajdexg-MatchWrapper.e1mxmq6p0")]
-        for link in hrefs:
-            games_list.append(link)
+        try:
+            time.sleep(2)
+            hrefs = [a.get_attribute("href") for a in
+                     driver.find_elements(By.CSS_SELECTOR,
+                                          "a.css-1ajdexg-MatchWrapper.e1mxmq6p0")]
+            if not hrefs:
+                return "You have exceeded the number of rounds in the league"
+            else:
+                games_list.extend(hrefs)
+        except:
+            print(f"Error waiting for match {i}")
     driver.quit()
     if games_list:
         return games_list
     else:
         return "You have exceeded the number of rounds in the league"
+    return games_list
 
 #
 # def extract_match_stats(game_link):
