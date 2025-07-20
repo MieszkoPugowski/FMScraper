@@ -74,6 +74,16 @@ def season_games_finder(url):
     driver.quit()
     return games_list
 
+
+# bundes_matches = season_games_finder(url=pick_subsite("matches"))
+# with open("games_list.txt","w") as file:
+#     for match in bundes_matches:
+#         file.write(f"{match}\n")
+
+games_list = []
+with open("games_list.txt","r") as f:
+    for line in f:
+        games_list.append(line.replace("\n",""))
 #
 # def extract_match_stats(game_link):
 #     driver.get(game_link)
