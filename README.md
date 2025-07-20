@@ -2,6 +2,8 @@
 
 FMScraper is a Python-based web scraping tool designed to collect football match data from [FotMob](https://www.fotmob.com/). It automates the extraction of match information.
 
+Inspired by: [Webscraper-PremData](https://github.com/deanpatel2/Webscraper-PremData/tree/main) and [scraping-football-sites](https://github.com/axelbol/scraping-football-sites/tree/main)
+
 ## Features
 
 - Scrapes match info from FotMob
