@@ -14,6 +14,9 @@ FMScraper is a Python-based web scraping tool designed to collect football match
 - [Selenium](https://selenium.dev/)
 - [chromedriver](https://chromedriver.chromium.org/) or another compatible WebDriver
 
+## Disclaimer
+This project is strictly for educational and research purposes. This software is not intended to be used commercially whatsoever.
+
 ## Installation
 
 1. Clone the repository:
