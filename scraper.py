@@ -36,6 +36,14 @@ def pick_subsite(subsite):
     else:
         return f"Please pick correct subsite from: {SUBSITES}"
 
+def pick_match_tab(tab,url):
+    TABS = ["facts","ticker","lineup","stats","h2h"]
+    if tab in TABS:
+        tab_url = ":".join([url,f"tab={tab}"])
+        return tab_url
+    else:
+        return f"Please pick correct tab from: {TABS}"
+
 def consent_fotmob():
     wait = WebDriverWait(driver, 5)
     consent_button = wait.until(
