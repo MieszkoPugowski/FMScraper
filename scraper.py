@@ -24,10 +24,10 @@ driver = webdriver.Chrome(options=options)
 BASE_URL = "https://www.fotmob.com/leagues"
 LEAGUE_ID = "38"
 LEAGUE = "bundesliga"
-SUBSITES = ["table","matches","stats","transfers",]
 SEASON = "2024-2025"
 
 def pick_subsite(subsite):
+    SUBSITES = ["table", "matches", "stats", "transfers", ]
     if subsite in SUBSITES:
         subsite_url = "/".join([BASE_URL, LEAGUE_ID, SUBSITES[SUBSITES.index(subsite)],
                                   LEAGUE])
@@ -64,8 +64,10 @@ def season_games_finder(url):
     else:
         return "You have exceeded the number of rounds in the league"
 
-bundes_matches = season_games_finder(url=pick_subsite("matches"))
-print(bundes_matches)
+#
+# def extract_match_stats(game_link):
+#     driver.get(game_link)
+driver.quit()
 
 
 
