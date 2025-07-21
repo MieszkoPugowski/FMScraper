@@ -3,7 +3,7 @@ name = "fmscraper"
 version = "0.1.0"
 description = "Scraper for FotMob matches"
 authors = [
-    { name = "Mieszko Pugowski", github = "https://github.com/MieszkoPugowski"}
+    { name = "Mieszko Pugowski"}
 ]
 license = "MIT"
 readme = "README.md"
