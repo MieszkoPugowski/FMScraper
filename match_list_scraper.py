@@ -10,9 +10,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.select import Select
 import time
-import pandas as pd
 
 # Setting up selenium driver
 options = webdriver.ChromeOptions()
@@ -25,7 +23,6 @@ BASE_URL = "https://www.fotmob.com/leagues"
 LEAGUE_ID = "38"
 LEAGUE = "bundesliga"
 SEASON = "2024-2025"
-
 def pick_subsite(subsite):
     SUBSITES = ["table", "matches", "stats", "transfers", ]
     if subsite in SUBSITES:
@@ -36,13 +33,6 @@ def pick_subsite(subsite):
     else:
         return f"Please pick correct subsite from: {SUBSITES}"
 
-def pick_match_tab(tab,url):
-    TABS = ["facts","ticker","lineup","stats","h2h"]
-    if tab in TABS:
-        tab_url = ":".join([url,f"tab={tab}"])
-        return tab_url
-    else:
-        return f"Please pick correct tab from: {TABS}"
 
 def consent_fotmob():
     wait = WebDriverWait(driver, 5)
@@ -51,13 +41,11 @@ def consent_fotmob():
     )
     consent_button.click()
 
-
-
-def season_games_finder(url):
+def season_games_finder(url,rounds):
     games_list = []
     driver.get(url)
     consent_fotmob()
-    for i in range(32):
+    for i in range(rounds):
         round_i = url +f"&group=by-round&round={i}"
         driver.get(round_i)
         try:
@@ -74,20 +62,10 @@ def season_games_finder(url):
     driver.quit()
     return games_list
 
+bundes_matches = season_games_finder(url=pick_subsite("matches"),rounds=32)
+with open("games_list.txt","w") as file:
+    for match in bundes_matches:
+        file.write(f"{match}\n")
 
-# bundes_matches = season_games_finder(url=pick_subsite("matches"))
-# with open("games_list.txt","w") as file:
-#     for match in bundes_matches:
-#         file.write(f"{match}\n")
-
-games_list = []
-with open("games_list.txt","r") as f:
-    for line in f:
-        games_list.append(line.replace("\n",""))
-#
-# def extract_match_stats(game_link):
-#     driver.get(game_link)
 driver.quit()
-
-
 
