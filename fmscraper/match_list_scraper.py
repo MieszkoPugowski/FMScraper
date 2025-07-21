@@ -12,12 +12,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 import time
 
-# Setting up selenium driver
-options = webdriver.ChromeOptions()
-options.add_argument("--no-sandbox")
-options.add_experimental_option("detach", True)
-driver = webdriver.Chrome(options=options)
-
 
 LEAGUE_ID = 38
 LEAGUE = "bundesliga"
@@ -31,6 +25,11 @@ class MatchLinks:
         self.league = league
         self.season = season
         self.final_url = ""
+        # Setting up selenium driver
+        options = webdriver.ChromeOptions()
+        options.add_argument("--no-sandbox")
+        options.add_experimental_option("detach", True)
+        self.driver = webdriver.Chrome(options=options)
         self._url_to_scrape()
 
     def _url_to_scrape(self):
@@ -43,7 +42,7 @@ class MatchLinks:
             return f"Please pick correct league's id or season (in format 20xx-20xx)"
 
     def _consent_fotmob(self):
-        wait = WebDriverWait(driver, 5)
+        wait = WebDriverWait(self.driver, 5)
         consent_button = wait.until(
             ec.element_to_be_clickable((By.CSS_SELECTOR, "button.fc-button.fc-cta-consent.fc-primary-button"))
         )
@@ -51,15 +50,15 @@ class MatchLinks:
 
     def season_games_finder(self,rounds):
         games_list = []
-        driver.get(self.final_url)
+        self.driver.get(self.final_url)
         self._consent_fotmob()
         for i in range(rounds):
             round_i = self.final_url +f"&group=by-round&round={i}"
-            driver.get(round_i)
+            self.driver.get(round_i)
             try:
                 time.sleep(2)
                 hrefs = [a.get_attribute("href") for a in
-                         driver.find_elements(By.CSS_SELECTOR,
+                         self.driver.find_elements(By.CSS_SELECTOR,
                                               "a.css-1ajdexg-MatchWrapper.e1mxmq6p0")]
                 if not hrefs:
                     return "You have exceeded the number of rounds in the league"
@@ -67,5 +66,13 @@ class MatchLinks:
                     games_list.extend(hrefs)
             except:
                 print(f"Error: stale element reference for match {i}")
-        driver.quit()
+        self.driver.quit()
         return games_list
+
+
+    def get_match_ids(self,games_list):
+        games_ids = []
+        for game in games_list:
+            match_id = game.split('#')[-1]
+            games_ids.append(match_id.replace("\n", ""))
+        return games_ids
