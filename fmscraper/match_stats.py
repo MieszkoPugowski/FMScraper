@@ -2,9 +2,6 @@ import requests
 from bs4 import BeautifulSoup
 import json
 from fmscraper.xmas_generator import generate_xmas_header
-from operator import itemgetter
-import matplotlib as mpl
-import matplotlib.pyplot as plt
 
 
 class MatchStats:
