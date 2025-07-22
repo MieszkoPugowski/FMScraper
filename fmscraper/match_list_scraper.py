@@ -28,7 +28,7 @@ class MatchLinks:
         # Setting up selenium driver
         options = webdriver.ChromeOptions()
         options.add_argument("--no-sandbox")
-        options.add_experimental_option("detach", True)
+        options.add_argument('--headless')
         self.driver = webdriver.Chrome(options=options)
         self._url_to_scrape()
 
