@@ -25,6 +25,30 @@ For educational and research purposes only. Do not use it commercially.
 ## Installation
 
 1. Clone the repository:
-   ```bash
-   git clone https://github.com/MieszkoPugowski/FMScraper.git
-   cd FMScraper
+```bash
+git clone https://github.com/MieszkoPugowski/FMScraper.git
+cd FMScraper
+```
+
+2. Install using pip:
+```bash
+pip install fmscraper
+```
+## Example usage
+```python
+from fmscraper import MatchStats, MatchLinks
+game_ids = MatchLinks(league_id=38,league="bundesliga",season='2024-2025').get_matches_ids(32)
+
+some_game = game_ids[0]
+
+data = MatchStats(some_game)
+
+# List of all shots in a game
+shotlist = data['content']['shotmap']['shots']
+print(shotlist)
+```
+
+## Contributing
+Contributions are welcome! Please feel free to submit a pull request or open an issue.
+
+
