@@ -48,8 +48,10 @@ class MatchLinks:
         )
         consent_button.click()
 
-    def season_games_finder(self,rounds):
+        
+    def get_matches_ids(self,rounds):
         games_list = []
+        games_ids = []
         self.driver.get(self.final_url)
         self._consent_fotmob()
         for i in range(rounds):
@@ -67,12 +69,14 @@ class MatchLinks:
             except:
                 print(f"Error: stale element reference for match {i}")
         self.driver.quit()
-        return games_list
-
-
-    def get_match_ids(self,games_list):
-        games_ids = []
         for game in games_list:
             match_id = game.split('#')[-1]
             games_ids.append(match_id.replace("\n", ""))
         return games_ids
+
+
+    def write_to_file(self,file_name,ids):
+        with open(f"{file_name}.txt","w") as file:
+            for id in ids:
+                file.write(f'{id}\n')
+
