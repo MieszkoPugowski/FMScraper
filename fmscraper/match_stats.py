@@ -4,18 +4,24 @@ from fmscraper.xmas_generator import generate_xmas_header
 
 
 class MatchStats:
-    def __init__(self,match_id):
-        self.url = "https://www.fotmob.com"
-        self.id = match_id
-        self.api_url = f'/api/data/matchDetails?matchId={self.id}'
-
-    def get_json_content(self):
-        headers = {
-            "x-mas": generate_xmas_header(self.api_url)
+    def __init__(self,league_id):
+        self.url = "https://www.fotmob.com/api"
+        self.league_id = league_id
+        self.matchdetails_url = self.url+f'/matchDetails?matchId='
+        self.leagues_url = self.url+f'/leagues?id={self.league_id}'
+        self.headers = {
+            "x-mas": generate_xmas_header(self.matchdetails_url)
         }
-        full_url = self.url+self.api_url
-        response = requests.get(full_url, headers=headers)
+
+    def get_json_content(self, url):
+        response = requests.get(url, headers=self.headers)
         response.raise_for_status()
-        soup = BeautifulSoup(response.text, 'html.parser').text
-        data = json.loads(soup)
+        data = response.json()
         return data
+
+    def get_match_details(self, match_id):
+        data = self.get_json_content(url=self.matchdetails_url + str(match_id))
+        return data['content']
+
+if __name__ == "__main__":
+    klasa = MatchStats(league_id=38)
