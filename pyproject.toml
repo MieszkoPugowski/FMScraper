@@ -1,6 +1,6 @@
 [project]
 name = "fmscraper"
-version = "0.1.0"
+version = "0.1.1"
 description = "Scraper for FotMob matches"
 authors = [
     { name = "Mieszko Pugowski"}
