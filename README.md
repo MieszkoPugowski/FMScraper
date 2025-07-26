@@ -1,6 +1,6 @@
 # FMScraper
 
-A Selenium-powered Python tool for scraping football match data from [FotMob](https://www.fotmob.com/).
+FMScraper is a web scraping tool that combines Selenium for dynamic content and requests for HTTP handling. This repository enables efficient extraction of data from [FotMob](https://www.fotmob.com/).
 
 Inspired by: [Webscraper-PremData](https://github.com/deanpatel2/Webscraper-PremData/tree/main) and [scraping-football-sites](https://github.com/axelbol/scraping-football-sites/tree/main)
 
