@@ -12,6 +12,7 @@ FMScraper is a web scraping tool designed to extract comprehensive football matc
 - Scrapes match info from FotMob
 - Handles JavaScript-driven layouts using Selenium
 - Extracts data for specific leagues, seasons, and matchweeks
+- Provides easily exportable or processable match data for further analysis.
 
 ## Requirements
 
