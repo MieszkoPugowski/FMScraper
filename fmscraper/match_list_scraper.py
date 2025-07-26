@@ -1,15 +1,9 @@
-"""
 
-Author: Mieszko Pugowski
-
-FotMob scraper
-
-**FOR EDUCATIONAL PURPOSES ONLY**
-"""
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
+from fmscraper.match_stats import MatchStats
 import time
 
 
@@ -30,7 +24,7 @@ class MatchLinks:
         options.add_argument("--no-sandbox")
         options.add_argument('--headless')
         self.driver = webdriver.Chrome(options=options)
-        self._url_to_scrape()
+
 
     def _url_to_scrape(self):
         try:
@@ -47,11 +41,10 @@ class MatchLinks:
             ec.element_to_be_clickable((By.CSS_SELECTOR, "button.fc-button.fc-cta-consent.fc-primary-button"))
         )
         consent_button.click()
-
         
-    def get_matches_ids(self,rounds):
+    def get_match_links(self,rounds):
+        self._url_to_scrape()
         games_list = []
-        games_ids = []
         self.driver.get(self.final_url)
         self._consent_fotmob()
         for i in range(rounds):
@@ -69,14 +62,25 @@ class MatchLinks:
             except:
                 print(f"Error: stale element reference for match {i}")
         self.driver.quit()
-        for game in games_list:
-            match_id = game.split('#')[-1]
-            games_ids.append(match_id.replace("\n", ""))
+        return games_list
+
+
+    def get_one_team_games(self,rounds,team_name):
+        games_list = self.get_match_links(rounds=rounds)
+        team_games = [game for game in games_list if team_name in game]
+        return team_games
+
+
+    def get_games_ids(self,rounds,team_or_all):
+        if team_or_all == "all":
+            games_list = self.get_match_links(rounds=rounds)
+        else:
+            assert team_or_all in MatchStats(league_id=LEAGUE_ID).get_available_teams(season=SEASON)
+            games_list = self.get_one_team_games(rounds=rounds,team_name=team_or_all)
+        games_ids = [game.split("#")[-1].replace("\n","") for game in games_list]
         return games_ids
 
-
-    def write_to_file(self,file_name,ids):
+    def write_to_file(self,file_name,to_write):
         with open(f"{file_name}.txt","w") as file:
-            for id in ids:
-                file.write(f'{id}\n')
-
+            for thing in to_write:
+                file.write(f'{thing}\n')
