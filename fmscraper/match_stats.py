@@ -23,5 +23,17 @@ class MatchStats:
         data = self.get_json_content(url=self.matchdetails_url + str(match_id))
         return data['content']
 
+    def get_available_teams(self, season):
+        season_formatted = season.replace("-", "%2F")
+        data = self.get_json_content(url=self.leagues_url + f"&season={season_formatted}&tab=overview&type=league")
+        try:
+            teams = data['table'][0]['data']['table']['all']
+        except KeyError as e:
+            teams = data['table'][0]['data']['tables'][2]['table']['xg']
+        teams_dict = {team['name'].lower(): {"name": team['name'].replace(" ", "-").lower(),
+                                             "id": team['id']} for team in teams}
+        return teams_dict
+
+
 if __name__ == "__main__":
     klasa = MatchStats(league_id=38)
