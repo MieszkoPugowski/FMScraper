@@ -12,6 +12,8 @@ class MatchStats:
         self.headers = {
             "x-mas": generate_xmas_header(self.matchdetails_url)
         }
+        self.content_types = ['matchFacts','stats','playerStats',
+                              'shotmap','lineup']
 
     def get_json_content(self, url):
         response = requests.get(url, headers=self.headers)
@@ -19,9 +21,10 @@ class MatchStats:
         data = response.json()
         return data
 
-    def get_match_details(self, match_id):
+    def get_match_details(self, match_id,content_type:str):
         data = self.get_json_content(url=self.matchdetails_url + str(match_id))
-        return data['content']
+        assert content_type in self.content_types
+        return data['content'][content_type]
 
     def get_available_teams(self, season):
         season_formatted = season.replace("-", "%2F")
