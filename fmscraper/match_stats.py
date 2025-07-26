@@ -1,5 +1,4 @@
 import requests
-from bs4 import BeautifulSoup
 import json
 from fmscraper.xmas_generator import generate_xmas_header
 
