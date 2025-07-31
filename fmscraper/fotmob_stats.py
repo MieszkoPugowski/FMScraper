@@ -38,9 +38,8 @@ class FotMobStats:
 
     def get_team_stats(self,team_id,tab):
         url = self.team_url+str(team_id)
-        response = requests.get(url,headers=self.headers)
-        response.raise_for_status()
-        assert tab in response.json()
+        data = self.get_json_content(url)
+        assert tab in data.keys()
         return response.json()[tab]
 
 
