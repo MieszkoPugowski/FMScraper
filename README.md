@@ -37,13 +37,15 @@ cd FMScraper
 pip install fmscraper
 ```
 ## Example usage
+
 ```python
-from fmscraper import MatchStats, MatchLinks
-game_ids = MatchLinks(league_id=38,league="bundesliga",season='2024-2025').get_matches_ids(32)
+from fmscraper import FotMobStats, MatchLinks
+
+game_ids = MatchLinks(league_id=38, league="bundesliga", season='2024-2025').get_matches_ids(32)
 
 some_game = game_ids[0]
 
-data = MatchStats(some_game)
+data = FotMobStats(some_game)
 
 # List of all shots in a game
 shotlist = data['content']['shotmap']['shots']

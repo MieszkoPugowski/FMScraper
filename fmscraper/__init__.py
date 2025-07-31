@@ -1,4 +1,4 @@
 from .match_list_scraper import MatchLinks
-from .match_stats import MatchStats
+from .fotmob_stats import FotMobStats
 
-__all__ = ["MatchLinks","MatchStats"]
+__all__ = ["MatchLinks", "FotMobStats"]

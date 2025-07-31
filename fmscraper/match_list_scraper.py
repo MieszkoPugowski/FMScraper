@@ -3,7 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
-from fmscraper.match_stats import MatchStats
+from fmscraper.fotmob_stats import FotMobStats
 import time
 
 
@@ -75,7 +75,7 @@ class MatchLinks:
         if team_or_all == "all":
             games_list = self.get_match_links(rounds=rounds)
         else:
-            assert team_or_all in MatchStats(league_id=LEAGUE_ID).get_available_teams(season=SEASON)
+            assert team_or_all in FotMobStats(league_id=LEAGUE_ID).get_available_teams(season=SEASON)
             games_list = self.get_one_team_games(rounds=rounds,team_name=team_or_all)
         games_ids = [game.split("#")[-1].replace("\n","") for game in games_list]
         return games_ids
