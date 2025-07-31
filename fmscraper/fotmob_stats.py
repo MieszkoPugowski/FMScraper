@@ -31,6 +31,9 @@ class FotMobStats:
 
 
     def get_player_stats(self,player_id):
+        url = self.player_url+str(player_id)
+        data = self.get_json_content(url)
+        return data
 
 
     def get_team_stats(self,team_id,tab):
