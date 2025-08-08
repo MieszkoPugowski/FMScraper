@@ -47,7 +47,14 @@ class FotMobStats:
         return game_ids
 
 
-
+    def get_season_stats(self,players_or_teams):
+        data = self.get_json_content(self.leagues_url+f"&season={self.season}")
+        try:
+            stats_json_list = [stat['fetchAllUrl'] for stat in data['stats'][players_or_teams]]
+            season_data = [requests.get(stat).json()['TopLists'][0] for stat in stats_json_list]
+            return season_data
+        except KeyError:
+            return "Incorrect players_or_teams value. Please pick either 'players' or 'teams'"
 
     def get_match_details(self, match_id,content_type:str):
         data = self.get_json_content(url=self.matchdetails_url + str(match_id))
