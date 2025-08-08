@@ -1,11 +1,11 @@
 import requests
 from fmscraper.xmas_generator import generate_xmas_header
 
-
 class FotMobStats:
-    def __init__(self,league_id):
+    def __init__(self,league_id,season):
         self.url = "https://www.fotmob.com/api"
         self.league_id = league_id
+        self.season = season.replace("-", "%2F")
         self.matchdetails_url = self.url+f'/matchDetails?matchId='
         self.leagues_url = self.url+f'/leagues?id={self.league_id}'
         self.team_url = self.url+f'/teams?id='
@@ -35,14 +35,13 @@ class FotMobStats:
         return data[tab]
 
 
-    def get_matches_list(self, season,team_or_all):
-        season_formated = season.replace('-',"%2F")
-        data = self.get_json_content(self.leagues_url+f"&season={season_formated}")
+    def get_matches_list(self,team_or_all):
+        data = self.get_json_content(self.leagues_url+f"&season={self.season}")
         games_list = data['matches']['allMatches']
         if team_or_all == "all":
             game_ids = [game['id'] for game in games_list]
         else:
-            assert team_or_all.lower() in self.get_available_teams(season).keys()
+            assert team_or_all.lower() in self.get_available_teams().keys()
             team = team_or_all.lower().replace(" ","-")
             game_ids = [game['id'] for game in games_list if team in game['pageUrl']]
         return game_ids
@@ -55,9 +54,8 @@ class FotMobStats:
         assert content_type in self.match_content_types
         return data['content'][content_type]
 
-    def get_available_teams(self, season):
-        season_formatted = season.replace("-", "%2F")
-        data = self.get_json_content(url=self.leagues_url + f"&season={season_formatted}&tab=overview&type=league")
+    def get_available_teams(self):
+        data = self.get_json_content(url=self.leagues_url + f"&season={self.season}&tab=overview&type=league")
         try:
             teams = data['table'][0]['data']['table']['all']
         except KeyError as e:
@@ -68,6 +66,6 @@ class FotMobStats:
 
 
 if __name__ == "__main__":
-    bundesliga_stats = FotMobStats(league_id=38)
+    bundesliga_stats = FotMobStats(league_id=38,season="2024-2025")
     # for value in staty.values():
     #     print(value)
