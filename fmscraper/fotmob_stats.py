@@ -40,7 +40,7 @@ class FotMobStats:
         url = self.team_url+str(team_id)
         data = self.get_json_content(url)
         assert tab in data.keys()
-        return response.json()[tab]
+        return data[tab]
 
 
     def get_season_stats(self,season_id,players_or_teams):

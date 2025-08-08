@@ -35,7 +35,7 @@ class MatchLinks:
         except:
             return f"Please pick correct league's id or season (in format 20xx-20xx)"
 
-    def _consent_fotmob(self):
+    def consent_fotmob(self):
         wait = WebDriverWait(self.driver, 5)
         consent_button = wait.until(
             ec.element_to_be_clickable((By.CSS_SELECTOR, "button.fc-button.fc-cta-consent.fc-primary-button"))
@@ -46,7 +46,7 @@ class MatchLinks:
         self._url_to_scrape()
         games_list = []
         self.driver.get(self.final_url)
-        self._consent_fotmob()
+        self.consent_fotmob()
         for i in range(rounds):
             round_i = self.final_url +f"&group=by-round&round={i}"
             self.driver.get(round_i)
