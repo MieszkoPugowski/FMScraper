@@ -1,6 +1,6 @@
 # FMScraper
 
-FMScraper is a web scraping tool that combines Selenium for dynamic content and requests for HTTP handling. This repository enables efficient extraction of data from [FotMob](https://www.fotmob.com/).
+FMScraper is a web scraping tool that uses requests for HTTP handling. This repository enables efficient extraction of data from [FotMob](https://www.fotmob.com/).
 
 Inspired by: [Webscraper-PremData](https://github.com/deanpatel2/Webscraper-PremData/tree/main) and [scraping-football-sites](https://github.com/axelbol/scraping-football-sites/tree/main)
 
@@ -10,16 +10,13 @@ FMScraper is a web scraping tool designed to extract comprehensive football matc
 ## Features
 
 - Scrapes match info from FotMob
-- Handles JavaScript-driven layouts using Selenium
 - Extracts data for specific leagues, seasons, and matchweeks
 - Provides easily exportable or processable match data for further analysis.
 
 ## Requirements
 
 - Python 3.8+
-- [Selenium](https://selenium.dev/)
 - [requests](https://pypi.org/project/requests/)
-- [chromedriver](https://chromedriver.chromium.org/) or another compatible WebDriver
 
 ## Disclaimer
 For educational and research purposes only. Do not use it commercially.
@@ -39,16 +36,17 @@ pip install fmscraper
 ## Example usage
 
 ```python
-from fmscraper import FotMobStats, MatchLinks
+from fmscraper import FotMobStats 
 
-game_ids = MatchLinks(league_id=38, league="bundesliga", season='2024-2025').get_matches_ids(32)
+bundesliga_stats = FotMobStats(league_id=38)
+game_ids = bundesliga_stats.get_matches_list(season="2024-2025",
+                                             team_or_all='all')
 
-some_game = game_ids[0]
-
-data = FotMobStats(some_game)
+first_game = game_ids[0]
 
 # List of all shots in a game
-shotlist = data['content']['shotmap']['shots']
+shotlist = bundesliga_stats.get_match_details(match_id=first_game,
+                                                content_type="shotmap")
 print(shotlist)
 ```
 

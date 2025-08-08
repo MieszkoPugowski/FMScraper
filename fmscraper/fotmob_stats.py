@@ -1,13 +1,5 @@
 import requests
-import json
 from fmscraper.xmas_generator import generate_xmas_header
-import pandas as pd
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as ec
-from selenium.webdriver.support.ui import Select
-import time
 
 
 class FotMobStats:
@@ -43,30 +35,19 @@ class FotMobStats:
         return data[tab]
 
 
-    def get_season_stats(self,season_id,players_or_teams):
-        if players_or_teams.lower() == "players":
-            stats_url = f"https://www.fotmob.com/leagues/{self.league_id}/stats/season/{season_id}/players/accurate_long_balls"
-        elif players_or_teams.lower() == "teams":
-            stats_url = f"https://www.fotmob.com/leagues/{self.league_id}/stats/season/{season_id}/teams/accurate_cross_team"
+    def get_matches_list(self, season,team_or_all):
+        season_formated = season.replace('-',"%2F")
+        data = self.get_json_content(self.leagues_url+f"&season={season_formated}")
+        games_list = data['matches']['allMatches']
+        if team_or_all == "all":
+            game_ids = [game['id'] for game in games_list]
         else:
-            return "Please pick either 'teams' or 'players'"
-        #selenium
-        options = webdriver.ChromeOptions()
-        options.add_argument("--no-sandbox")
-        options.add_argument('--headless')
-        driver = webdriver.Chrome(options=options)
-        driver.get(stats_url)
-        wait = WebDriverWait(driver, 5)
-        consent_button = wait.until(
-            ec.element_to_be_clickable((By.CSS_SELECTOR, "button.fc-button.fc-cta-consent.fc-primary-button"))
-        )
-        consent_button.click()
-        wait = WebDriverWait(driver, 10)
-        stat_element = wait.until(
-            ec.presence_of_all_elements_located((By.CSS_SELECTOR, "select.eoy2tw2"))
-        )
-        # why i only see 5 stats?
-        dropdown = Select(stat_element[1])
+            assert team_or_all.lower() in self.get_available_teams(season).keys()
+            team = team_or_all.lower().replace(" ","-")
+            game_ids = [game['id'] for game in games_list if team in game['pageUrl']]
+        return game_ids
+
+
 
 
     def get_match_details(self, match_id,content_type:str):
@@ -88,3 +69,5 @@ class FotMobStats:
 
 if __name__ == "__main__":
     klasa = FotMobStats(league_id=38)
+    # for value in staty.values():
+    #     print(value)
