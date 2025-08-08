@@ -68,6 +68,6 @@ class FotMobStats:
 
 
 if __name__ == "__main__":
-    klasa = FotMobStats(league_id=38)
+    bundesliga_stats = FotMobStats(league_id=38)
     # for value in staty.values():
     #     print(value)
